@@ -26,4 +26,7 @@ A simple group expense management application that helps users track shared expe
 **Yash Chavan**  
 [GitHub](https://github.com/YashChavan04)
 
+## 🌐 Live Demo
+https://hisaab-expense-splitter.vercel.app/
+
 Built as part of the Ascent Labs Web Development Internship.
