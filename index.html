@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HISAAB | Expense Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <i class="fa-solid fa-wallet"></i>
+                <h2>HI<span>SAAB</span></h2>
+            </div>
+
+            <div class="group-selector">
+                <label>ACTIVE GROUP</label>
+
+                <select id="groupSelect">
+                    <option value="">No group selected</option>
+                </select>
+
+                <button id="newGroupBtn" class="new-group-btn">
+                    <i class="fa-solid fa-plus"></i> Create Group
+                </button>
+            </div>
+
+            <nav>
+
+                <a href="#" class="nav-link active" data-section="dashboard">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+
+                <a href="#" class="nav-link" data-section="members">
+                    <i class="fa-solid fa-users"></i>
+                    Members
+                </a>
+
+                <a href="#" class="nav-link" data-section="expenses">
+                    <i class="fa-solid fa-receipt"></i>
+                    Expenses
+                </a>
+
+                <a href="#" class="nav-link" data-section="settlements">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    Settle Up
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <div>
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="groupSubtitle">Select or create a group to get started.</p>
+                </div>
+
+                <div class="account">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span id="profileName">User</span>
+                </div>
+
+            </header>
+
+
+            <!-- NO GROUP MESSAGE -->
+            <div id="noGroupMessage" class="empty-state">
+
+                <i class="fa-solid fa-people-group"></i>
+
+                <h2>Welcome to HISAAB</h2>
+
+                <p>Create your first group to start tracking shared expenses.</p>
+
+                <button id="emptyCreateBtn">
+                    <i class="fa-solid fa-plus"></i>
+                    Create Your First Group
+                </button>
+
+            </div>
+
+
+            <!-- DASHBOARD -->
+            <section id="dashboard" class="page-section">
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <i class="fa-solid fa-wallet"></i>
+                        <p>Total Spending</p>
+                        <h2 id="totalSpending">₹0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <i class="fa-solid fa-users"></i>
+                        <p>Total Members</p>
+                        <h2 id="totalMembers">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <i class="fa-solid fa-receipt"></i>
+                        <p>Total Expenses</p>
+                        <h2 id="totalExpenses">0</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h2>Category Breakdown</h2>
+
+                    <div id="expenseChart">
+                        <p class="muted">No expenses recorded yet.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h2>Recent Expenses</h2>
+
+                    <div id="recentExpenses">
+                        <p class="muted">No expenses recorded yet.</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MEMBERS -->
+            <section id="members" class="page-section hidden">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Group Members</h2>
+                        <p>Manage members of your selected group.</p>
+                    </div>
+
+                    <button class="primary-btn" id="addMemberBtn">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Member
+                    </button>
+
+                </div>
+
+                <div id="membersList" class="members-grid"></div>
+
+            </section>
+
+
+            <!-- EXPENSES -->
+            <section id="expenses" class="page-section hidden">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Group Expenses</h2>
+                        <p>Track and manage shared expenses.</p>
+                    </div>
+
+                    <button class="primary-btn" id="addExpenseBtn">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Expense
+                    </button>
+
+                </div>
+
+                <div class="panel">
+
+                    <div id="expensesList"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SETTLEMENTS -->
+            <section id="settlements" class="page-section hidden">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Settle Up</h2>
+                        <p>See who owes whom in this group.</p>
+                    </div>
+
+                </div>
+
+                <div class="panel">
+
+                    <div id="settlementsList"></div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- GROUP MODAL -->
+    <div class="modal hidden" id="groupModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>Create New Group</h2>
+                <button class="close-btn" data-close="groupModal">&times;</button>
+            </div>
+
+            <form id="groupForm">
+
+                <label>Group Name</label>
+
+                <input
+                    type="text"
+                    id="groupName"
+                    placeholder="Example: Goa Trip"
+                    required
+                >
+
+                <button type="submit" class="primary-btn">
+                    Create Group
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- MEMBER MODAL -->
+    <div class="modal hidden" id="memberModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>Add Member</h2>
+                <button class="close-btn" data-close="memberModal">&times;</button>
+            </div>
+
+            <form id="memberForm">
+
+                <label>Member Name</label>
+
+                <input
+                    type="text"
+                    id="memberName"
+                    placeholder="Enter member name"
+                    required
+                >
+
+                <button type="submit" class="primary-btn">
+                    Add Member
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXPENSE MODAL -->
+    <div class="modal hidden" id="expenseModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2 id="expenseModalTitle">Add Expense</h2>
+                <button class="close-btn" data-close="expenseModal">&times;</button>
+            </div>
+
+            <form id="expenseForm">
+
+                <label>Description</label>
+
+                <input
+                    type="text"
+                    id="expenseDescription"
+                    placeholder="Example: Dinner"
+                    required
+                >
+
+                <label>Amount</label>
+
+                <input
+                    type="number"
+                    id="expenseAmount"
+                    placeholder="Enter amount"
+                    min="0.01"
+                    step="0.01"
+                    required
+                >
+
+                <label>Category</label>
+
+                <select id="expenseCategory">
+
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Other">Other</option>
+
+                </select>
+
+
+                <label>Paid By</label>
+
+                <select id="paidBy" required></select>
+
+
+                <label>Expense Date</label>
+
+                <input type="date" id="expenseDate" required>
+
+
+                <label>Split Among</label>
+
+                <div id="participantList" class="participant-list"></div>
+
+
+                <button type="submit" class="primary-btn">
+                    Save Expense
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
